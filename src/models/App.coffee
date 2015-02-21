@@ -7,7 +7,8 @@ class window.App extends Backbone.Model
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
     @get('playerHand').on 'stand', => @dealerTurn() # dealerTurn
-
+    @get('dealerHand').on 'checkWin', => @checkWin()
+    @get('playerHand').on 'checkWin', => @checkWin()
 
     #@set('dealerHand').on('stand')  #somefunction here
 
@@ -27,7 +28,33 @@ class window.App extends Backbone.Model
 
 
   dealerTurn: =>
-    console.log 2
-    return 3
-   # @get 'dealerHand', -> autoPlay
+   # console.log @get('dealerHand')
+   @get('dealerHand').trigger('autoPlay')
+
+
+  checkWin: =>
+    dealer = @get('dealerHand').scores()[0]
+    player = @get('playerHand').scores()[0]
+    if  dealer > 21
+      @confirmBox('The House loses')
+    else if player >21 and dealer<17
+      @confirmBox('You lose')
+    else if (dealer >= 17)
+        if player > dealer
+            @confirmBox('You win')
+        else
+            @confirmBox('The House Wins')
+
+    console.log 'checkWin called'
+    $('.stand-button').css({'visibility':'visible'})
+    $('.hit-button').css({'visibility':'visible'})
+
+
+  confirmBox: (text) =>
+    newAlert = confirm text
+    if newAlert
+      console.log "reload"
+      location.reload();
+
+
 

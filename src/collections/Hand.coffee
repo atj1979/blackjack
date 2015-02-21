@@ -2,6 +2,7 @@ class window.Hand extends Backbone.Collection
   model: Card
 
   initialize: (array, @deck, @isDealer) ->
+    @on('autoPlay', @autoPlay, @)
 
   stand: ->
     @trigger 'stand'
@@ -10,8 +11,7 @@ class window.Hand extends Backbone.Collection
 
   hit: ->
     @add(@deck.pop())
-    if @scores()[0]>21
-      alert('lose')
+    @trigger 'checkWin'
     #   if lose
 
     #     trigger 'lose'
@@ -32,7 +32,10 @@ class window.Hand extends Backbone.Collection
     [@minScore(), @minScore() + 10 * @hasAce()]
 
   autoPlay: ->
-    console.log 'autoPlay called'
+    @models[0].trigger 'flip'
+    while @scores()[0] < 17
+      @hit()
+    #@trigger 'checkWin'
   #if @isDealer and @stand
     #if @scores()[0]< 21 and @scores()[0]>17
       #see who won
