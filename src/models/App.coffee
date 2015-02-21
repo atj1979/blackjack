@@ -45,9 +45,7 @@ class window.App extends Backbone.Model
         else
             @confirmBox('The House Wins')
 
-    console.log 'checkWin called'
-    $('.stand-button').css({'visibility':'visible'})
-    $('.hit-button').css({'visibility':'visible'})
+
 
 
   confirmBox: (text) =>
